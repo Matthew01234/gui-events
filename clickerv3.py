@@ -7,31 +7,46 @@ window.title('Clicker')
 window.geometry('300x300')
 window.resizable(0,0)
 nummer = 0
+lastpress = True
 def update (event = ''):
+    box1.configure(text=nummer)
     if nummer < 0 :
         window.config(background='red')
     if nummer > 0 :
         window.config(background='green')
     if nummer == 0 :
         window.config(background='grey')
+    box1.configure(text="%.0f" %nummer)
+    window.update()
+
+def delenVerdubbelen(event):
+    global nummer
+    if lastpress == True:
+        nummer *= 3
+
+    elif lastpress == False:
+        nummer /= 3
+    update()
+
+    
+
+
+
 
 
 def yellowbackground (event):
      window.config(background='yellow')
 
 def up():
-    global nummer
+    global nummer, lastpress
     nummer += 1
-    window.update()
-    box1.configure(text=nummer)
+    lastpress = True
     update()
 
 def down():
-    global nummer
+    global nummer, lastpress
     nummer -= 1
-    window.update()
-    box1.update()
-    box1.configure(text=nummer)
+    lastpress = False
     update()
 
 
@@ -55,7 +70,7 @@ box1.pack(
 )
 box1.bind('<Enter>',yellowbackground)
 box1.bind('<Leave>',update)
-
+box1.bind('<Double-Button>',delenVerdubbelen)
 buttonDown = tkinter.Button(window,width=35, height=3,command=down)
 buttonDown.pack()
 buttonDown.configure(text='down')
